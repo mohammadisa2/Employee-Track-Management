@@ -59,33 +59,40 @@ class UserTokensWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('latest_token')
                     ->label('🎫 Bearer Token')
                     ->getStateUsing(function (User $record) {
-                        // Jika ini adalah user yang sedang login, ambil dari session
+                        // Jika ini adalah user yang sedang login, tampilkan token lengkap
                         if (auth()->id() === $record->id) {
                             $sessionToken = session('sanctum_token');
                             return $sessionToken ? 'Bearer ' . $sessionToken : '❌ Tidak ada token di session';
                         }
                         
-                        // Untuk user lain, ambil dari database
+                        // Untuk user lain, sembunyikan dengan asterisk
                         $latestToken = $record->tokens()->latest()->first();
-                        return $latestToken ? 'Bearer ' . $latestToken->token : '❌ Tidak ada token';
+                        if ($latestToken) {
+                            return 'Bearer ************************************';
+                        }
+                        return '❌ Tidak ada token';
                     })
                     ->copyable()
                     ->copyableState(function (User $record) {
-                        // Jika ini adalah user yang sedang login, ambil dari session
+                        // Hanya user yang sedang login yang bisa copy token lengkap
                         if (auth()->id() === $record->id) {
                             $sessionToken = session('sanctum_token');
                             return $sessionToken ? 'Bearer ' . $sessionToken : null;
                         }
                         
-                        // Untuk user lain, ambil dari database
-                        $latestToken = $record->tokens()->latest()->first();
-                        return $latestToken ? 'Bearer ' . $latestToken->token : null;
+                        // User lain tidak bisa copy token asli
+                        return null;
                     })
                     ->fontFamily('mono')
                     ->size('xs')
                     ->wrap()
                     ->color('gray')
-                    ->tooltip('Klik untuk menyalin Bearer token lengkap'),
+                    ->tooltip(function (User $record) {
+                        if (auth()->id() === $record->id) {
+                            return 'Klik untuk menyalin Bearer token lengkap';
+                        }
+                        return 'Token disembunyikan untuk keamanan';
+                    }),
                     
                 Tables\Columns\TextColumn::make('last_used_at')
                     ->label('⏰ Terakhir Digunakan')
@@ -116,7 +123,8 @@ class UserTokensWidget extends BaseWidget
                         
                         return view('filament.widgets.user-tokens-modal', [
                             'tokens' => $tokens,
-                            'user' => $record
+                            'user' => $record,
+                            'isCurrentUser' => auth()->id() === $record->id
                         ]);
                     })
                     ->modalWidth('4xl'),
