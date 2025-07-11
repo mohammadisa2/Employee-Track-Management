@@ -30,7 +30,8 @@ class EmployeeLogResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user.name')
+                Forms\Components\Select::make('employee_id')
+                    ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\Select::make('type')
                     ->options([

@@ -17,7 +17,6 @@ class EmployeeLogController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'employeeId' => 'required|string',
             'type' => 'required|in:website_visit,keystroke,activity',
             'url' => 'nullable|string',
             'title' => 'nullable|string',
@@ -38,13 +37,14 @@ class EmployeeLogController extends Controller
 
         try {
             $data = $request->all();
+            $user = $request->user(); // Get authenticated user from token
             
             // Parse timestamp
             $loggedAt = Carbon::parse($data['timestamp']);
             
             // Prepare log data
             $logData = [
-                'employee_id' => $data['employeeId'],
+                'employee_id' => $user->id, // Use authenticated user's ID
                 'type' => $data['type'],
                 'url' => $data['url'] ?? null,
                 'title' => $data['title'] ?? null,
@@ -90,10 +90,14 @@ class EmployeeLogController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        $user = $request->user();
         $query = EmployeeLog::query();
 
-        // Filter by employee ID
-        if ($request->has('employee_id')) {
+        // Filter by authenticated user's ID by default
+        $query->byEmployee($user->id);
+
+        // Allow admin to filter by specific employee ID
+        if ($request->has('employee_id') && $user->hasRole('admin')) {
             $query->byEmployee($request->employee_id);
         }
 
@@ -122,16 +126,20 @@ class EmployeeLogController extends Controller
      */
     public function statistics(Request $request): JsonResponse
     {
-        $employeeId = $request->get('employee_id');
+        $user = $request->user();
+        $employeeId = $user->id; // Use authenticated user's ID
+        
+        // Allow admin to view other employee's stats
+        if ($request->has('employee_id') && $user->hasRole('admin')) {
+            $employeeId = $request->get('employee_id');
+        }
+        
         $startDate = $request->get('start_date', now()->startOfDay());
         $endDate = $request->get('end_date', now()->endOfDay());
 
         $query = EmployeeLog::query()
+            ->byEmployee($employeeId)
             ->byDateRange($startDate, $endDate);
-
-        if ($employeeId) {
-            $query->byEmployee($employeeId);
-        }
 
         $stats = [
             'total_logs' => $query->count(),

