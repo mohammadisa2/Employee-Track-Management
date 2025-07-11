@@ -13,20 +13,20 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "js/background.js"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "js": ["content.js"],
+    "js": ["js/content.js"],
     "run_at": "document_start"
   }],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "html/popup.html",
     "default_title": "Employee Monitor"
   },
   "icons": {
-    "16": "letter-16.png",
-    "64": "letter-64.png",
-    "128": "letter-128.png"
+    "16": "images/letter-16.png",
+    "64": "images/letter-64.png",
+    "128": "images/letter-128.png"
   }
 }

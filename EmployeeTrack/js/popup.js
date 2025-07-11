@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Configuration button
   document.getElementById('configBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('config.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('html/config.html') });
   });
   
   // Logs button
   document.getElementById('logsBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('logs.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('html/logs.html') });
   });
 });
