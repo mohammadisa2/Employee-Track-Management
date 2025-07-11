@@ -11,5 +11,4 @@ Route::get('/user', function (Request $request) {
 Route::prefix('log')->group(function () {
     Route::post('/', [EmployeeLogController::class, 'store'])->middleware('auth:sanctum');
     Route::get('/', [EmployeeLogController::class, 'index'])->middleware('auth:sanctum');
-    Route::get('/statistics', [EmployeeLogController::class, 'statistics'])->middleware('auth:sanctum');
 });

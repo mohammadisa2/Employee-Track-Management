@@ -121,45 +121,4 @@ class EmployeeLogController extends Controller
         ]);
     }
 
-    /**
-     * Get employee statistics
-     */
-    public function statistics(Request $request): JsonResponse
-    {
-        $user = $request->user();
-        $employeeId = $user->id; // Use authenticated user's ID
-        
-        // Allow admin to view other employee's stats
-        if ($request->has('employee_id') && $user->hasRole('admin')) {
-            $employeeId = $request->get('employee_id');
-        }
-        
-        $startDate = $request->get('start_date', now()->startOfDay());
-        $endDate = $request->get('end_date', now()->endOfDay());
-
-        $query = EmployeeLog::query()
-            ->byEmployee($employeeId)
-            ->byDateRange($startDate, $endDate);
-
-        $stats = [
-            'total_logs' => $query->count(),
-            'website_visits' => $query->clone()->websiteVisits()->count(),
-            'keystroke_logs' => $query->clone()->keystrokes()->count(),
-            'activity_logs' => $query->clone()->activities()->count(),
-            'unique_domains' => $query->clone()->websiteVisits()
-                ->distinct('domain')
-                ->count('domain'),
-            'top_domains' => $query->clone()->websiteVisits()
-                ->selectRaw('domain, COUNT(*) as visits')
-                ->groupBy('domain')
-                ->orderBy('visits', 'desc')
-                ->limit(10)
-                ->get()
-        ];
-
-        return response()->json([
-            'success' => true,
-            'data' => $stats
-        ]);
-    }
 }
