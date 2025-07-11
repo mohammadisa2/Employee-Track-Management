@@ -17,7 +17,12 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Responses\LoginWithTokenResponse;
 use App\Filament\Widgets\TokenWidget;
+use App\Filament\Widgets\EmployeeLogStatsWidget;
+use App\Filament\Widgets\TopDomainsWidget;
+use App\Filament\Widgets\DailyActivityChart;
+use App\Filament\Widgets\UserTokensWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -38,9 +43,16 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Row 1: Stats Overview
+                EmployeeLogStatsWidget::class,
+                
+                // Row 2: Charts and Token
+                DailyActivityChart::class,
                 TokenWidget::class,
+                
+                // Row 3: Tables (Full Width)
+                TopDomainsWidget::class,
+                UserTokensWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -55,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])->sidebarCollapsibleOnDesktop();
+            ])
+            ->sidebarCollapsibleOnDesktop();
     }
 }
