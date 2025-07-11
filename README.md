@@ -283,5 +283,7 @@ curl -X POST http://localhost:8001/api/log \
 
 ---
 
-**Catatan**: Sistem ini dirancang untuk tujuan monitoring produktivitas karyawan. Pastikan penggunaan sesuai dengan kebijakan perusahaan dan regulasi privasi yang berlaku. Dashboard admin menyediakan interface yang user-friendly untuk monitoring dan analisis aktivitas karyawan.
-```
+**Catatan**: Sistem ini dirancang untuk tujuan monitoring produktivitas karyawan. Pastikan penggunaan sesuai dengan kebijakan perusahaan dan regulasi privasi yang berlaku.
+Dashboard admin menyediakan interface yang user-friendly untuk monitoring dan analisis aktivitas. Dihalaman dashboard siapapun hanya dapat melihat dan mengakses data aktivitas miliknya sendiri.
+
+Nantikan update fitur-fitur yang akan datang. Terima kasih!
