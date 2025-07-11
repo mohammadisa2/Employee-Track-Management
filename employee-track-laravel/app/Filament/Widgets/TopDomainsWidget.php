@@ -7,7 +7,6 @@ use Filament\Widgets\TableWidget as BaseWidget;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 
 class TopDomainsWidget extends BaseWidget
 {
@@ -25,7 +24,7 @@ class TopDomainsWidget extends BaseWidget
                     ->byEmployee(Auth::id())
                     ->websiteVisits()
                     ->byDateRange(now()->startOfDay(), now()->endOfDay())
-                    ->selectRaw('domain, COUNT(*) as visits, MAX(logged_at) as last_visit')
+                    ->selectRaw('domain, COUNT(*) as visits, MAX(logged_at) as last_visit, MIN(id) as record_id')
                     ->groupBy('domain')
                     ->orderBy('visits', 'desc')
                     ->limit(10)
@@ -59,5 +58,10 @@ class TopDomainsWidget extends BaseWidget
             ->defaultSort('visits', 'desc')
             ->paginated(false)
             ->striped();
+    }
+    
+    public function getTableRecordKey($record): string
+    {
+        return (string) $record->domain;
     }
 }
