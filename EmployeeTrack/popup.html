@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .status {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .active { background-color: #d4edda; color: #155724; }
+    .inactive { background-color: #f8d7da; color: #721c24; }
+    .info { margin: 10px 0; }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-primary { background-color: #007bff; color: white; }
+    .btn-secondary { background-color: #6c757d; color: white; }
+  </style>
+</head>
+<body>
+  <div id="status" class="status">
+    <strong>Status:</strong> <span id="statusText">Checking...</span>
+  </div>
+  
+  <div class="info">
+    <strong>Employee ID:</strong> <span id="employeeId">-</span>
+  </div>
+  
+  <div class="info">
+    <strong>Last Sync:</strong> <span id="lastSync">-</span>
+  </div>
+  
+  <button id="configBtn" class="btn-primary">Configuration</button>
+  <button id="logsBtn" class="btn-secondary">View Logs</button>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

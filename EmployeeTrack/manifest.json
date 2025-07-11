@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Employee Monitoring Extension",
+  "version": "1.0.0",
+  "description": "Ekstensi monitoring untuk karyawan dengan persetujuan",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "background"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_start"
+  }],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Employee Monitor"
+  },
+  "icons": {
+    "16": "letter-16.png",
+    "64": "letter-64.png",
+    "128": "letter-128.png"
+  }
+}

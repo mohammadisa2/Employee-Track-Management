@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Employee Monitor Configuration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .consent {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Employee Monitoring Configuration</h1>
+  
+  <div class="consent">
+    <h3>Persetujuan Monitoring</h3>
+    <p>Dengan menggunakan ekstensi ini, Anda menyetujui bahwa aktivitas browser Anda akan dipantau untuk tujuan produktivitas perusahaan. Data yang dikumpulkan meliputi:</p>
+    <ul>
+      <li>Website yang dikunjungi</li>
+      <li>Aktivitas keyboard (keystroke logging)</li>
+      <li>Aktivitas mouse dan form</li>
+    </ul>
+    <p>Data akan disimpan dengan aman dan hanya digunakan untuk evaluasi kinerja.</p>
+  </div>
+  
+  <form id="configForm">
+    <div class="form-group">
+      <label for="employeeId">Employee ID:</label>
+      <input type="text" id="employeeId" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="serverUrl">Server URL:</label>
+      <input type="url" id="serverUrl" placeholder="https://monitoring.company.com/api">
+    </div>
+    
+    <div class="form-group">
+      <label for="authToken">Auth Token:</label>
+      <input type="password" id="authToken">
+    </div>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="consent" required>
+        Saya menyetujui monitoring aktivitas browser saya
+      </label>
+    </div>
+    
+    <button type="submit">Save Configuration</button>
+  </form>
+  
+  <script src="config.js"></script>
+</body>
+</html>
