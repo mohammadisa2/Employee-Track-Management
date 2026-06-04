@@ -3,7 +3,6 @@
     "Inject",
     "Execute",
     "Exec",
-    "Loaded",
     "Exploit"
   ],
   "Error": ["CoreGui"],
